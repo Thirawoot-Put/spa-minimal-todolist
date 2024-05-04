@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const toDoList =
   localStorage.getItem("toDos") !== null
@@ -18,8 +18,7 @@ const toDoSlice = createSlice({
   initialState: initialState,
   reducers: {
     addToDo: (state, action) => {
-      const newToDo = { ...action.payload, id: nanoid(), complete: false };
-      state.toDos.push(newToDo);
+      state.toDos.push(action.payload);
       localStorage.setItem("toDos", JSON.stringify(state.toDos));
     },
     deleteToDo: (state, action) => {

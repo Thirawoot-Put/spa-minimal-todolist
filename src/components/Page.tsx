@@ -6,18 +6,24 @@ import Todo from "./Todo";
 import { RootState } from "../redux/store";
 import { addToDo } from "../redux/slice/todoSlice";
 import RadioSelect from "./RadioSelect";
+import { nanoid } from "@reduxjs/toolkit";
 
 function Page() {
   const dispatch = useDispatch();
 
   const { toDos } = useSelector((state: RootState) => state.todo);
   const [input, setInput] = useState("");
+  const [displayToDos, setDisplayToDos] = useState(toDos);
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) =>
     setInput(event.target.value);
 
   const handleAddToDo = () => {
-    dispatch(addToDo({ task: input }));
+    const newToDo = { task: input, id: nanoid(), complete: false };
+    const copyToDos = [...displayToDos];
+    copyToDos.push(newToDo);
+    setDisplayToDos(copyToDos);
+    dispatch(addToDo(newToDo));
     setInput("");
   };
 
@@ -34,7 +40,7 @@ function Page() {
         >
           Todo list
         </Typography>
-        <RadioSelect />
+        <RadioSelect setDisplayToDos={setDisplayToDos} />
       </Box>
       <Box
         sx={{
@@ -54,7 +60,7 @@ function Page() {
           add
         </Button>
       </Box>
-      {toDos.map((todo) => (
+      {displayToDos.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}
     </Box>

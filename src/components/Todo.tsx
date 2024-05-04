@@ -12,13 +12,19 @@ export type TToDo = {
 
 type TToDoProps = {
   todo: TToDo;
+  onDeleteToDo: (id: string) => void;
+  onCheckBoxChange: (item: TToDo) => void;
 };
 
-function Todo({ todo }: TToDoProps) {
+function Todo({ todo, onDeleteToDo, onCheckBoxChange }: TToDoProps) {
   const dispatch = useDispatch();
-  const handleDeleteToDo = (id: string) => dispatch(deleteToDo(id));
+  const handleDeleteToDo = (id: string) => {
+    onDeleteToDo(id);
+    dispatch(deleteToDo(id));
+  };
   const handleCheckChange = () => {
     const copyToDo = { ...todo, complete: !todo.complete };
+    onCheckBoxChange(copyToDo);
     dispatch(checkComplete(copyToDo));
   };
   return (

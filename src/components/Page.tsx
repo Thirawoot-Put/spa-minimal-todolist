@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Button, Input, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-import Todo from "./Todo";
+import Todo, { TToDo } from "./Todo";
 import { RootState } from "../redux/store";
 import { addToDo } from "../redux/slice/todoSlice";
 import RadioSelect from "./RadioSelect";
@@ -25,6 +25,24 @@ function Page() {
     setDisplayToDos(copyToDos);
     dispatch(addToDo(newToDo));
     setInput("");
+  };
+
+  const onDeleteToDo = (id: string) => {
+    const foundIndex = displayToDos.findIndex((todo) => todo.id === id);
+    if (foundIndex !== -1) {
+      const copyToDos = [...displayToDos];
+      copyToDos.splice(foundIndex, 1);
+      setDisplayToDos(copyToDos);
+    }
+  };
+
+  const onCheckBoxChange = (item: TToDo) => {
+    const foundIndex = displayToDos.findIndex((todo) => todo.id === item.id);
+    if (foundIndex !== -1) {
+      const copyToDos = [...displayToDos];
+      copyToDos.splice(foundIndex, 1, item);
+      setDisplayToDos(copyToDos);
+    }
   };
 
   return (
@@ -61,7 +79,12 @@ function Page() {
         </Button>
       </Box>
       {displayToDos.map((todo) => (
-        <Todo key={todo.id} todo={todo} />
+        <Todo
+          key={todo.id}
+          todo={todo}
+          onDeleteToDo={onDeleteToDo}
+          onCheckBoxChange={onCheckBoxChange}
+        />
       ))}
     </Box>
   );

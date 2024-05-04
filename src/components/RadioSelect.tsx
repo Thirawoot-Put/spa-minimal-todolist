@@ -32,7 +32,7 @@ function RadioSelect({ setDisplayToDos }: TRadioSelect) {
     }
   };
   return (
-    <RadioGroup onChange={filterToDos} row>
+    <RadioGroup defaultValue="all" onChange={filterToDos} row>
       <FormControlLabel value="all" control={<Radio />} label="All" />
       <FormControlLabel value="complete" control={<Radio />} label="Complete" />
       <FormControlLabel

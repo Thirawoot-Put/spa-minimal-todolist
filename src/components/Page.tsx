@@ -19,12 +19,16 @@ function Page() {
     setInput(event.target.value);
 
   const handleAddToDo = () => {
-    const newToDo = { task: input, id: nanoid(), complete: false };
-    const copyToDos = [...displayToDos];
-    copyToDos.push(newToDo);
-    setDisplayToDos(copyToDos);
-    dispatch(addToDo(newToDo));
-    setInput("");
+    if (input === "") {
+      return alert("Task is require");
+    } else {
+      const newToDo = { task: input, id: nanoid(), complete: false };
+      const copyToDos = [...displayToDos];
+      copyToDos.push(newToDo);
+      setDisplayToDos(copyToDos);
+      dispatch(addToDo(newToDo));
+      setInput("");
+    }
   };
 
   const onDeleteToDo = (id: string) => {
@@ -73,6 +77,7 @@ function Page() {
           fullWidth={true}
           placeholder="Add your task"
           value={input}
+          required={true}
         />
         <Button onClick={handleAddToDo} variant="outlined">
           add
